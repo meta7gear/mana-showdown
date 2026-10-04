@@ -1,0 +1,37 @@
+dist/
+test-results/
+playwright-report/
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Firebase service-account downloads
+*-firebase-adminsdk-*.json
+service-account*.json
+.vercel
+
+scripts/*
+README.local.md
+.env*

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#090c17"><title>Mana Showdown — Prototype</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<aside class="avatar-strip" aria-label="Players">
+  <section class="portrait portrait-opponent" data-player="0" data-jacket-off="/avatars/opponent-action-jacket-off.png" data-swimsuit="/avatars/opponent-action-bikini.png" data-defeated="/avatars/opponent-defeated.png" data-defeated-alt="Violet-haired winged rival defeated, seated on the ground in her sporty bikini" data-jacket-off-alt="Violet-haired adult rival without her jacket, casting purple lightning" data-swimsuit-alt="Violet-haired adult rival in a sporty black and purple bikini, casting purple lightning" aria-label="Opponent, player two">
+    <img src="/avatars/opponent.png" alt="Violet-haired anime rival with black wings and electric purple energy" width="1122" height="1402" fetchpriority="high">
+    <span class="portrait-id">PLAYER 02 <i></i></span>
+    <div class="portrait-name"><small>THE MIDNIGHT WING</small><b>Opponent</b></div>
+  </section>
+  <section class="portrait portrait-player" data-player="1" data-jacket-off="/avatars/player-action-jacket-off.png" data-swimsuit="/avatars/player-action-bikini.png" data-defeated="/avatars/player-defeated.png" data-defeated-alt="Calico heroine defeated, seated on the ground in her sporty bikini" aria-label="Player, player two">
+    <img src="/avatars/player.png" alt="Calico cat-eared anime heroine surrounded by golden fire" width="1122" height="1402" fetchpriority="high">
+    <span class="portrait-id">PLAYER 01 <i></i></span>
+    <div class="portrait-name"><small>THE GOLDEN SPARK</small><b>Player</b></div>
+  </section>
+  <div class="portrait-abilities" aria-label="Player abilities">
+    <button class="ability-icon ability-ace" type="button" data-ability="ace" aria-label="Pull an Ace" title="Pull an Ace">
+      <b aria-hidden="true">A</b><span class="ability-cooldown" aria-hidden="true"></span>
+    </button>
+    <button class="ability-icon ability-draw-one" type="button" data-ability="draw-one" aria-label="Draw one card at a time for 30 seconds" title="Draw one card at a time for 30 seconds">
+      <b aria-hidden="true">1</b><span class="ability-cooldown" aria-hidden="true"></span>
+    </button>
+    <button class="ability-icon ability-shuffle" type="button" data-ability="shuffle" aria-label="Shuffle draw deck" title="Shuffle draw deck">
+      <i data-lucide="shuffle" aria-hidden="true"></i><span class="ability-cooldown" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="versus" aria-label="Versus"><span>VS</span></div>
+</aside>
+<main class="table" aria-label="Mana Showdown board">
+<div class="half top-half"><div class="circuit"></div><div class="gear gear-one"></div><div class="gear gear-two"></div></div>
+<div class="half bottom-half"><div class="circuit"></div><div class="gear gear-one"></div><div class="gear gear-two"></div></div>
+<div class="foundation-band"></div>
+<div class="board-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="ambient-motes" aria-hidden="true"></div>
+<div class="reactor reactor-top"><div class="sigil-art" aria-hidden="true"></div></div>
+<div class="reactor reactor-bottom"><div class="sigil-art" aria-hidden="true"></div></div>
+<div class="tableau-rails top-rails"><i></i><i></i><i></i><i></i></div><div class="tableau-rails bottom-rails"><i></i><i></i><i></i><i></i></div>
+<div id="game-canvas"></div><div id="charge-zone" aria-label="Tableau mana charge"></div><div id="spell-zone" aria-label="Shared spells"></div>
+<div class="board-ui">
+<div class="player top-player"><span class="avatar">O</span><span><small>THE MIDNIGHT WING</small><b>Opponent</b></span><div class="health-panel top-health" id="health-panel-0" role="meter" aria-label="Opponent health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span>HP</span><div class="health-track"><i id="health-fill-0"></i></div><b id="health-0">100</b><div class="combo-progress" id="combo-progress-0" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
+<div class="player bottom-player"><span class="avatar">M</span><span><small>THE GOLDEN SPARK </small><b>Player</b></span><div class="health-panel bottom-health" id="health-panel-1" role="meter" aria-label="Player health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span>HP</span><div class="health-track"><i id="health-fill-1"></i></div><b id="health-1">100</b><div class="combo-progress" id="combo-progress-1" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
+<div class="hp-counter top-counter" role="status" aria-label="Opponent: 100 HP remaining"><b id="hp-total-0">100</b></div>
+<div class="hp-counter bottom-counter" role="status" aria-label="Player: 100 HP remaining"><b id="hp-total-1">100</b></div>
+<div class="deck-count top-deck-count" id="stock-0"></div><div class="deck-count bottom-deck-count" id="stock-1"></div>
+<div class="draw-one-progress" id="draw-one-progress" role="timer" aria-label="Draw one ability inactive" hidden><i></i><span>30s</span></div>
+<div class="game-status" style="display: none;"><span id="moves">0</span> MOVES <i></i><span id="renderer-label">3D</span></div>
+</div>
+<nav class="game-controls" aria-label="Game controls"><button id="undo" title="Undo (Ctrl/Cmd + Z)" aria-label="Undo"><i data-lucide="undo-2"></i></button><button id="hint" title="Hint" aria-label="Hint"><i data-lucide="lightbulb"></i></button><button id="sound" aria-label="Mute sound" title="Mute sound"><i data-lucide="volume-2"></i></button><button id="rules" aria-label="How to play" title="How to play"><i data-lucide="circle-help"></i></button><button id="new-game" title="New game" aria-label="New game"><i data-lucide="rotate-cw"></i></button></nav>
+<div id="loading" role="status" aria-live="polite"><div class="loading-card"><h1>Mana<br><em>Showdown</em></h1><div class="loading-mark" aria-hidden="true">F <span>G</span> W</div><div class="loading-meter"><progress max="1" value="0" aria-label="Asset loading progress"></progress><b class="loading-percent">0%</b></div><p class="loading-status">Loading the arena…</p><button class="primary loading-retry" hidden onclick="location.reload()">Reload</button></div></div><div id="toast" role="status"></div>
+</main>
+<dialog id="match-dialog" aria-labelledby="match-title" aria-describedby="match-description">
+<h2 id="match-title">Mana Showdown</h2>
+<p id="match-description">Choose your opponent’s difficulty </p>
+<form id="match-form">
+<fieldset class="difficulty-options" aria-describedby="difficulty-description">
+<legend>AI difficulty</legend>
+<label class="difficulty-card">
+<input type="radio" name="difficulty" value="easy" aria-label="Easy">
+<img src="/avatars/opponent.png" alt="" width="1122" height="1402">
+<span class="difficulty-check" aria-hidden="true">✓</span>
+<span class="portrait-name"><b>Easy</b></span>
+</label>
+<label class="difficulty-card">
+<input type="radio" name="difficulty" value="medium" aria-label="Medium">
+<img src="/avatars/opponent-action-jacket-off.png" alt="" width="1122" height="1402">
+<span class="difficulty-check" aria-hidden="true">✓</span>
+<span class="portrait-name"><b>Medium</b></span>
+</label>
+<label class="difficulty-card">
+<input type="radio" name="difficulty" value="hard" aria-label="Hard" checked>
+<img src="/avatars/opponent-action-bikini.png" alt="" width="1122" height="1402">
+<span class="difficulty-check" aria-hidden="true">✓</span>
+<span class="portrait-name"><b>Hard</b></span>
+</label>
+</fieldset>
+<p id="difficulty-description" aria-live="polite">Hard: quick thinking, with an occasional missed move.</p>
+<button class="primary" type="submit">Start match <span>→</span></button>
+</form>
+</dialog>
+<dialog id="rules-dialog"><button class="close-modal" aria-label="Close">×</button><span class="eyebrow">MANA
+    SHOWDOWN</span>
+  <h2>Race to cast.</h2>
+  <p>Charge up mana to unleash spells against your opponent. The more spells you cast the higher the damage output becomes.</p>
+  <ol>
+    <li><b>Build Up Mana</b> Cycle through your deck, moving cards in alternating black/red descending order into your mana columns to charge up your mana</li>
+    <li><b>Aces</b> can be used as 1 or 10, using an Ace to cast a spell grants a +10 hp bonus</li>
+    <li><b>Spells</b> can be cast once you have the required mana. Each time you cast a spell its cost and damage will increase next use, except for healing spells which always remain 4 mana to cast.
+    <li><b>Combos</b> allow you to stack up damage, by performing multiple attacks in a row you'll get damage modifiers</li>
+    <li><b>Abilities</b> allow you to expose an Ace, draw through the deck 1 card at a time for a short period or reshuffle your deck if you get stuck</li>
+  </ol>
+  <p class="modal-tip">Double-click an exposed card to move it to the first legal column. Use Hint for a suggested move. Undo reverses your last action.</p><button
+    class="primary close-rules">Let's play <span>→</span></button>
+</dialog>
+<dialog id="win-dialog" aria-labelledby="winner-name"><img id="winner-avatar" src="/avatars/opponent.png" alt="Opponent avatar" width="80" height="80"><h2 id="winner-name">Opponent Wins</h2><section class="match-score" aria-label="Your match score">
+<span class="score-label">Your score</span><strong id="final-score">0</strong>
+<p id="score-record" hidden>New high score!</p>
+<p class="score-summary">Best <b id="high-score">0</b><span>Match time <b id="match-duration">0:00</b></span></p>
+<dl id="score-breakdown"></dl>
+</section><button id="play-again" class="primary">Play Again</button></dialog>
+<script type="module" src="/main.js"></script></body></html>
